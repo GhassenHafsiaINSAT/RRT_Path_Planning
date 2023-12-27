@@ -1,7 +1,6 @@
 import pygame
 from RRTbasePY import RRTGraph 
 from RRTbasePY import RRTMap
-#import optimisation
 
 def main(): 
     dimensions=(600,800)
@@ -19,22 +18,6 @@ def main():
     obstacles=graph.addObstacles(obstacles)
     map.drawMap(obstacles)
 
-    """"
-    while(True):
-        x,y = graph.sample_envir()
-        n=graph.number_of_nodes()
-        graph.add_node(n,x,y)
-        graph.add_edge(n-1,n)
-        x1,y1=graph.x[n],graph.y[n]
-        x2,y2=graph.x[n-1],graph.y[n-1]
-        if (graph.isFree()):
-            pygame.draw.circle(map.map,map.red,(graph.x[n],graph.y[n]),map.nodeRad,map.nodeThikness)
-            if not graph.crossObstacle(x1,x2,y1,y2):
-                pygame.draw.line(map.map,map.blue,(x1,y1),(x2,y2),map.edgeThikness)
-
-        pygame.display.update()
-    """
-    #while (iterarion<500):
     while (not graph.path_to_goal()):
         if iteration % 10 == 0:
             X, Y, Parent = graph.bias(goal)
