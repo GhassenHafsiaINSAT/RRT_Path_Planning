@@ -24,7 +24,25 @@ This code provides a simple implementation of the RRT algorithm for path plannin
 
 2. `main.py`: Sample script demonstrating the usage of the RRT algorithm with a graphical representation.
 
-## Usage
+
+## Code Explanation
+
+### RRTbasePY.py
+
+This file (`/path/to/RRTbasePY.py`) contains the implementation of the RRT algorithm. It defines two classes: `RRTMap` and `RRTGraph`.
+
+- **RRTMap Class**: Manages the visualization of the map and obstacles. It includes methods to draw the map, obstacles, and paths.
+
+- **RRTGraph Class**: Manages the RRT graph structure and algorithm. It includes methods for adding nodes, connecting edges, sampling the environment, and generating paths.
+
+### main.py
+
+This file (`/path/to/main.py`) uses the RRT algorithm from `RRTbasePY.py` to plan a path in a 2D environment using Pygame for visualization.
+
+- It initializes the RRTMap and RRTGraph classes.
+- Obstacles and map dimensions are defined.
+- The RRT algorithm is executed with visualization using Pygame.
+
 
 ### Prerequisites
 
