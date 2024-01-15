@@ -451,8 +451,8 @@ class RRTGraph:
         - pathCoords (list): List of node coordinates in the optimized path.
         """
         pathCoords=[]
+        print(self.refined_path)
         for node in self.refined_path:
-            print(node)
             x,y=(self.x[node],self.y[node])
             pathCoords.append([x,y])   
         return pathCoords          
@@ -525,6 +525,4 @@ class RRTGraph:
             i = j
         x,y = self.goal[0],self.goal[1]    
         self.refined_path.append([x,y])     
-
-        print(self.refined_path)
         return self.refined_path

@@ -31,7 +31,8 @@ def main():
         if iteration % 5 == 0:
             pygame.display.update()
         iteration += 1
-    map.drawPath(graph.getPathCoords()) 
+    map.drawPath(graph.getPathCoords())
+    graph.optimize_path()
     map.drawPath_1(graph.getPathCoords_1())
     pygame.display.update()
     pygame.event.clear()
