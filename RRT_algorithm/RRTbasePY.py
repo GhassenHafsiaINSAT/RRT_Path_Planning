@@ -194,8 +194,8 @@ class RRTGraph:
         self.path=[]
         #smoothed path
         self.refined_path=[]
-                 
-    def add_node(self,n,x,y): 
+
+    def add_node(self, n, x, y) -> None:
         """
         Add a node to the graph with given coordinates.
 
@@ -204,8 +204,11 @@ class RRTGraph:
         - x (float): X-coordinate of the new node.
         - y (float): Y-coordinate of the new node.
         """        
-        self.x.insert(n,x)
+        self.x.insert(n, x)
+        if n != len(self.y):
+            print(n, len(self.y))
         self.y.append(y)
+        #self.y.insert(n, y)
 
     def remove_node(self,n): 
         """
