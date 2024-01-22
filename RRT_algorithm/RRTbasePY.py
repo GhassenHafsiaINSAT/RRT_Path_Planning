@@ -99,23 +99,11 @@ class RRTMap:
         - path (list): List of nodes representing the original RRT path.
         - path_smoothed (list): List of nodes representing the optimized RRT path.
         """    
+
         for node in path:
             pygame.draw.circle(self.map, self.BLUE, node, self.NODE_RAD + 5, 0)
         for node in path_smoothed:
             pygame.draw.circle(self.map, self.RED, node, self.NODE_RAD + 5, 0)
-
-    def drawPath_1(self, path): 
-        """
-        Draw the original RRT path.
-        Draw the optimized (smoothed) RRT path.
-
-        Parameters:
-        - path (list): List of nodes representing the original RRT path.
-        - path_smoothed (list): List of nodes representing the optimized RRT path.
-        """    
-        for node in path:
-            pygame.draw.circle(self.map, self.BLUE, node, self.NODE_RAD + 5, 0)
-     
 
     def drawobs(self): 
         """
@@ -170,8 +158,8 @@ class RRTGraph:
     - expand: Method to expand the RRT graph by adding a new node.
     - optimize_path: Method to smooth the path by removing unnecessary waypoints.
     """
-    RADIUS: int = 38
-    SAFETY_DISTANCE: int = 5
+    SAFETY_DISTANCE: int = 10
+    RADIUS = 38
 
     def __init__(self, start, goal, mapDimensions, obsdim, obstacles, prohibited_zone):
         """
@@ -183,7 +171,7 @@ class RRTGraph:
         self.start = start
         self.goal = goal
         self.found_goal = False
-        self.maph, self.mapw = mapDimensions
+        self.mapw, self.maph = mapDimensions
 
         self.x = [self.start[0]]
         self.y = [self.start[1]]
@@ -350,8 +338,9 @@ class RRTGraph:
                 x = x1 * u + x2 * (1 - u)
                 y = y1 * u + y2 * (1 - u)
                 # TODO[RS]: is halfing the radius intentional here, or is this a bug
-                if math.hypot(x - obstacle[0], y - obstacle[1]) < (self.obsDim / 2 + self.SAFETY_DISTANCE + self.RADIUS / 2):
-                    return True
+                distance = math.sqrt((float(x) - float(obstacle[0])) ** 2 + (float(y) - float(obstacle[1])) ** 2)
+                if (distance < (self.obsDim / 2 + self.SAFETY_DISTANCE + self.RADIUS / 2)) or ((self.prohibited_zone[0] < x < self.prohibited_zone[2]) and (self.prohibited_zone[1] < y < self.prohibited_zone[3])):
+                    return True        
         return False
     
     def connect(self, n1: int, n2: int) -> bool:
@@ -377,7 +366,7 @@ class RRTGraph:
             self.add_edge(n1, n2)
             return True
 
-    def step(self, nnear: int, nrand: int, dmax: int = 50):
+    def step(self, nnear: int, nrand: int, dmax: int = 80):
         """
         Take a step towards a random sample, ensuring a maximum step distance and avoiding obstacles.
 
@@ -500,7 +489,6 @@ class RRTGraph:
         """
         self.getPathCoords()
         temporary_path = self.getPathCoords()
-        print(len(temporary_path))
         self.refined_path.append(temporary_path[0])
 
         i = 0  
@@ -523,5 +511,6 @@ class RRTGraph:
         if not (self.refined_path[-1] == self.goal):   
             x = self.goal[0] 
             y = self.goal[1]    
-            self.refined_path.append([x, y])  
+            self.refined_path.append([x, y]) 
+        print (self.refined_path)     
         return self.refined_path

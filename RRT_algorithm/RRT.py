@@ -51,9 +51,8 @@ def run(map: RRTMap,
                 time.sleep(slowmo_sleep)
         iteration += 1
 
-    #smoothed_path_coords = graph.optimize_path()
-    #map.drawPath(graph.getPathCoords(),smoothed_path_coords)
-    map.drawPath_1(graph.getPathCoords())
+    smoothed_path_coords = graph.optimize_path()
+    map.drawPath(graph.getPathCoords(),smoothed_path_coords)
     pygame.display.update()
 
 
