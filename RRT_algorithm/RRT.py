@@ -28,16 +28,19 @@ def run(map: RRTMap,
     running: bool = True
     iteration: int = 0
     while running and (not graph.path_to_goal()):
+        print('Iter --')
         event: pygame.event.Event
         for event in pygame.event.get():
             running = not is_quit_event(event)
 
         if iteration % 5 == 0:
+            print('Biasing')
             X, Y, Parent = graph.bias(goal)
             # TODO[RS]: move this to the map class as a function and call it without referencing class constants
             pygame.draw.circle(map.map, map.GRAY, (X[-1], Y[-1]), map.NODE_RAD + 2, 0)
             pygame.draw.line(map.map, map.BLUE, (X[-1], Y[-1]), (X[Parent[-1]], Y[Parent[-1]]), map.EDGE_THICKNESS)
         else:
+            print('Expanding')
             X, Y, Parent = graph.expand()
             pygame.draw.circle(map.map, map.GRAY, (X[-1], Y[-1]), map.NODE_RAD + 2, 0)
             pygame.draw.line(map.map, map.BLUE, (X[-1], Y[-1]), (X[Parent[-1]], Y[Parent[-1]]), map.EDGE_THICKNESS)
@@ -51,7 +54,10 @@ def run(map: RRTMap,
                 time.sleep(slowmo_sleep)
         iteration += 1
 
+    print('Optimizing')
     smoothed_path_coords = graph.optimize_path()
+
+    print('Drawing')
     map.drawPath(graph.getPathCoords(),smoothed_path_coords)
     pygame.display.update()
 
@@ -61,8 +67,8 @@ def main(args):
     start = (100, 250)
     goal = (600, 250)
     obsdim = 31
-    obstacles = [[275,300], [275,200], [375,125], [375,375], [475,300], [475,200]]
-    prohibited_zone = [275,200,475,300]
+    obstacles = [[275, 300], [275, 200], [375, 125], [375, 375], [475, 300], [475, 200]]
+    prohibited_zone = [275, 200, 475, 300]
     pygame.init()
 
     map = RRTMap(start, goal, dimensions, obsdim, obstacles, prohibited_zone)
@@ -80,8 +86,10 @@ def main(args):
     slow_motion: bool = args.slowmo
 
     while True:
+        map.reset(start, goal, dimensions, obsdim, obstacles, prohibited_zone)
+        graph.reset(start, goal, dimensions, obsdim, obstacles, prohibited_zone)
         run(map, graph, goal, controlled, slow_motion, args.sleep)
-        
+
         controlled = False
         slow_motion = False
         e: pygame.event.Event = pygame.event.wait(0)
@@ -96,9 +104,6 @@ def main(args):
         else:
             pygame.quit()
             break
-
-        map.reset(start, goal, dimensions, obsdim, obstacles, prohibited_zone)
-        graph.reset(start, goal, dimensions, obsdim, obstacles, prohibited_zone)
 
 
 if __name__ == '__main__':

@@ -70,7 +70,7 @@ class RRTMap:
         self.map = pygame.display.set_mode((self.Mapw, self.Maph))
         self.map.fill(self.WHITE)
 
-        self.obstacles: List = obstacles
+        self.obstacles: List[List[int]] = obstacles
         self.obsdim = obsdim
         self.prohibited_zone = prohibited_zone
 
@@ -273,7 +273,7 @@ class RRTGraph:
             # TODO[RS]: check here if the point is in the obstacles/prohibited area(s)
             # Basically run the sampled point through a list of "filters" that would tell you whether
             # it's a good candidate or not
-
+            print('sampling envir', x, y)
             if not (self.prohibited_zone[0] <= x <= self.prohibited_zone[2] and self.prohibited_zone[1] <= y <= self.prohibited_zone[3]):
                 return (x, y)
 
@@ -290,9 +290,11 @@ class RRTGraph:
         nnear = 0
         dmin = self.distance(nnear, n)
         # TODO[RS]: shouldn't this go through all the nodes, and not the nodes up to that given index ?
+        #for i in range(1, self.number_of_nodes()):
         for i in range(1, n):
-            if self.distance(i, n) < dmin:
-                dmin = self.distance(i,n)
+            d = self.distance(i, n)
+            if d < dmin:
+                dmin = d
                 nnear = i
         return nnear
 
@@ -337,9 +339,12 @@ class RRTGraph:
                 u = i / 100
                 x = x1 * u + x2 * (1 - u)
                 y = y1 * u + y2 * (1 - u)
-                # TODO[RS]: is halfing the radius intentional here, or is this a bug
                 distance = math.sqrt((float(x) - float(obstacle[0])) ** 2 + (float(y) - float(obstacle[1])) ** 2)
-                if (distance < (self.obsDim / 2 + self.SAFETY_DISTANCE + self.RADIUS / 2)) or ((self.prohibited_zone[0] < x < self.prohibited_zone[2]) and (self.prohibited_zone[1] < y < self.prohibited_zone[3])):
+                # TODO[RS]: is halfing the radius intentional here, or is this a bug
+                #is_too_close_to_obstacle: bool = distance < (self.obsDim / 2 + self.SAFETY_DISTANCE + self.RADIUS / 2)
+                is_too_close_to_obstacle: bool = distance < (self.obsDim / 2 + self.SAFETY_DISTANCE + self.RADIUS)
+                is_in_prohibited_area: bool = (self.prohibited_zone[0] < x < self.prohibited_zone[2]) and (self.prohibited_zone[1] < y < self.prohibited_zone[3])
+                if is_too_close_to_obstacle or is_in_prohibited_area:
                     return True        
         return False
     
@@ -388,6 +393,7 @@ class RRTGraph:
             # TODO[RS]: why are we removing a node here ?
             self.remove_node(nrand)
 
+            # NOTE[RS]: The distance to the goal could actually be bigger than max distance here, and still be accepted
             if abs(x - self.goal[0]) < dmax and abs(y - self.goal[1]) < dmax:
                 self.add_node(nrand, self.goal[0], self.goal[1])
                 self.goalstate = nrand
@@ -448,9 +454,6 @@ class RRTGraph:
         - y (list): List of y-coordinates of nodes.
         - parent (list): List of parent indices for each node.
         """
-        if self.found_goal:
-            return self.x, self.y, self.parent
-
         n = self.number_of_nodes()
         self.add_node(n, ngoal[0], ngoal[1])
         nnear = self.nearest(n)
@@ -467,9 +470,6 @@ class RRTGraph:
         - y (list): List of y-coordinates of nodes.
         - parent (list): List of parent indices for each node.
         """
-        if self.found_goal:
-            return self.x, self.y, self.parent
-
         n = self.number_of_nodes()
         x, y = self.sample_envir()
         self.add_node(n, x, y)
@@ -487,7 +487,6 @@ class RRTGraph:
         Returns:
         - refined_path (list): List of indices representing the optimized (smoothed) RRT path.
         """
-        self.getPathCoords()
         temporary_path = self.getPathCoords()
         self.refined_path.append(temporary_path[0])
 
@@ -506,6 +505,11 @@ class RRTGraph:
                     break
                 else:
                     j -= 1
+            # # j == 0 -> all points cross obstacles
+            # if not j:
+            #     break
+            if j == n - 1 and i == n - 1:
+                break
             i = j
 
         if not (self.refined_path[-1] == self.goal):   
