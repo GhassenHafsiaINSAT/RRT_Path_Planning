@@ -10,7 +10,6 @@ from typing import Tuple
 
 SLOW_MO_SLEEP: float = 0.2
 
-
 def is_quit_event(event: pygame.event.Event):
     return event.type == pygame.QUIT or event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE
 
@@ -37,12 +36,12 @@ def run(map: RRTMap,
             print('Biasing')
             X, Y, Parent = graph.bias(goal)
             # TODO[RS]: move this to the map class as a function and call it without referencing class constants
-            pygame.draw.circle(map.map, map.GRAY, (X[-1], Y[-1]), map.NODE_RAD + 2, 0)
+            pygame.draw.circle(map.map, map.GRAY, (X[-1], Y[-1]), map.NODE_RAD + 3, 0)
             pygame.draw.line(map.map, map.BLUE, (X[-1], Y[-1]), (X[Parent[-1]], Y[Parent[-1]]), map.EDGE_THICKNESS)
         else:
             print('Expanding')
             X, Y, Parent = graph.expand()
-            pygame.draw.circle(map.map, map.GRAY, (X[-1], Y[-1]), map.NODE_RAD + 2, 0)
+            pygame.draw.circle(map.map, map.GRAY, (X[-1], Y[-1]), map.NODE_RAD + 3, 0)
             pygame.draw.line(map.map, map.BLUE, (X[-1], Y[-1]), (X[Parent[-1]], Y[Parent[-1]]), map.EDGE_THICKNESS)
 
         if iteration % 5 == 0:
@@ -67,7 +66,7 @@ def main(args):
     start = (100, 250)
     goal = (600, 250)
     obsdim = 31
-    obstacles = [[275, 300], [275, 200], [375, 125], [375, 375], [475, 300], [475, 200]]
+    obstacles = [[275, 300], [275, 200], [375, 150], [375, 350], [475, 300], [475, 200]]
     prohibited_zone = [275, 200, 475, 300]
     pygame.init()
 

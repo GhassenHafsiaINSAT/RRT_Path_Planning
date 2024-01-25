@@ -17,6 +17,7 @@ from typing import List, Tuple
 Color = Tuple[int, int, int]
 
 
+
 class RRTMap:
     """
     RRTMap class handles the visualization of the map and obstacles.
@@ -103,7 +104,7 @@ class RRTMap:
         for node in path:
             pygame.draw.circle(self.map, self.BLUE, node, self.NODE_RAD + 5, 0)
         for node in path_smoothed:
-            pygame.draw.circle(self.map, self.RED, node, self.NODE_RAD + 5, 0)
+            pygame.draw.circle(self.map, self.RED, node, self.NODE_RAD + 38, 0)
 
     def drawobs(self): 
         """
@@ -267,8 +268,8 @@ class RRTGraph:
         while True:
             # TODO[RS]: maybe we can add the bias towards the goal in here, and start with
             # an ROI around the goal, then keep on expanding with every failed iteration
-            x = int(random.uniform(0, self.mapw))
-            y = int(random.uniform(0, self.maph))
+            x = int(random.uniform(self.RADIUS, self.mapw - self.RADIUS))
+            y = int(random.uniform(self.RADIUS, self.maph - self.RADIUS))
 
             # TODO[RS]: check here if the point is in the obstacles/prohibited area(s)
             # Basically run the sampled point through a list of "filters" that would tell you whether
@@ -340,9 +341,7 @@ class RRTGraph:
                 x = x1 * u + x2 * (1 - u)
                 y = y1 * u + y2 * (1 - u)
                 distance = math.sqrt((float(x) - float(obstacle[0])) ** 2 + (float(y) - float(obstacle[1])) ** 2)
-                # TODO[RS]: is halfing the radius intentional here, or is this a bug
-                #is_too_close_to_obstacle: bool = distance < (self.obsDim / 2 + self.SAFETY_DISTANCE + self.RADIUS / 2)
-                is_too_close_to_obstacle: bool = distance < (self.obsDim / 2 + self.SAFETY_DISTANCE + self.RADIUS)
+                is_too_close_to_obstacle: bool = distance < (self.obsDim + self.SAFETY_DISTANCE + self.RADIUS)
                 is_in_prohibited_area: bool = (self.prohibited_zone[0] < x < self.prohibited_zone[2]) and (self.prohibited_zone[1] < y < self.prohibited_zone[3])
                 if is_too_close_to_obstacle or is_in_prohibited_area:
                     return True        
@@ -371,7 +370,7 @@ class RRTGraph:
             self.add_edge(n1, n2)
             return True
 
-    def step(self, nnear: int, nrand: int, dmax: int = 80):
+    def step(self, nnear: int, nrand: int, dmax: int = 70):
         """
         Take a step towards a random sample, ensuring a maximum step distance and avoiding obstacles.
 
@@ -390,11 +389,10 @@ class RRTGraph:
             theta = math.atan2(py, px)
             (x, y) = (int(xnear + (dmax - self.SAFETY_DISTANCE) * math.cos(theta)), int(ynear + (dmax - self.SAFETY_DISTANCE) * math.sin(theta)))
 
-            # TODO[RS]: why are we removing a node here ?
             self.remove_node(nrand)
 
-            # NOTE[RS]: The distance to the goal could actually be bigger than max distance here, and still be accepted
-            if abs(x - self.goal[0]) < dmax and abs(y - self.goal[1]) < dmax:
+            if math.sqrt(float(x - self.goal[0])**2 + float(y - self.goal[1])**2)< dmax : 
+            #if abs(x - self.goal[0]) < dmax and abs(y - self.goal[1]) < dmax:
                 self.add_node(nrand, self.goal[0], self.goal[1])
                 self.goalstate = nrand
                 self.found_goal = True
@@ -511,10 +509,12 @@ class RRTGraph:
             if j == n - 1 and i == n - 1:
                 break
             i = j
-
+        """
         if not (self.refined_path[-1] == self.goal):   
             x = self.goal[0] 
             y = self.goal[1]    
-            self.refined_path.append([x, y]) 
-        print (self.refined_path)     
+            self.refined_path.append([x, y])
+        """    
+        print ("original path" ,self.getPathCoords()) 
+        print ("refined path ",self.refined_path)     
         return self.refined_path
