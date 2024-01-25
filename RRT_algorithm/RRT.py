@@ -27,19 +27,19 @@ def run(map: RRTMap,
     running: bool = True
     iteration: int = 0
     while running and (not graph.path_to_goal()):
-        print('Iter --')
+        #print('Iter --')
         event: pygame.event.Event
         for event in pygame.event.get():
             running = not is_quit_event(event)
 
         if iteration % 5 == 0:
-            print('Biasing')
+            #print('Biasing')
             X, Y, Parent = graph.bias(goal)
             # TODO[RS]: move this to the map class as a function and call it without referencing class constants
             pygame.draw.circle(map.map, map.GRAY, (X[-1], Y[-1]), map.NODE_RAD + 3, 0)
             pygame.draw.line(map.map, map.BLUE, (X[-1], Y[-1]), (X[Parent[-1]], Y[Parent[-1]]), map.EDGE_THICKNESS)
         else:
-            print('Expanding')
+            #print('Expanding')
             X, Y, Parent = graph.expand()
             pygame.draw.circle(map.map, map.GRAY, (X[-1], Y[-1]), map.NODE_RAD + 3, 0)
             pygame.draw.line(map.map, map.BLUE, (X[-1], Y[-1]), (X[Parent[-1]], Y[Parent[-1]]), map.EDGE_THICKNESS)
@@ -53,10 +53,10 @@ def run(map: RRTMap,
                 time.sleep(slowmo_sleep)
         iteration += 1
 
-    print('Optimizing')
+    #print('Optimizing')
     smoothed_path_coords = graph.optimize_path()
 
-    print('Drawing')
+    #print('Drawing')
     map.drawPath(graph.getPathCoords(),smoothed_path_coords)
     pygame.display.update()
 
@@ -79,7 +79,7 @@ def main(args):
     msg += '\ts: restart the sinulation in slow motion [200 ms step]\n'
     msg += '\tc: restart the sinulation in a controlled step [press key to advance]\n'
 
-    print(msg)
+    #print(msg)
 
     controlled: bool = args.controlled
     slow_motion: bool = args.slowmo

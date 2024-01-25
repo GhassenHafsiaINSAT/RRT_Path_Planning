@@ -274,7 +274,7 @@ class RRTGraph:
             # TODO[RS]: check here if the point is in the obstacles/prohibited area(s)
             # Basically run the sampled point through a list of "filters" that would tell you whether
             # it's a good candidate or not
-            print('sampling envir', x, y)
+            #print('sampling envir', x, y)
             if not (self.prohibited_zone[0] <= x <= self.prohibited_zone[2] and self.prohibited_zone[1] <= y <= self.prohibited_zone[3]):
                 return (x, y)
 
@@ -490,16 +490,20 @@ class RRTGraph:
 
         i = 0  
         n = len(temporary_path)
+        #print(n)
 
-        while i < n:
+        while i < n-1:
+            #print("n= ", n)
+            #print("i= ", i)
             last_valid_node = temporary_path[i + 1]
 
             j = n - 1
             while j > i:
+                #print("j= ", j)
                 if not self.crossObstacle(temporary_path[i][0], temporary_path[j][0], temporary_path[i][1], temporary_path[j][1]):
                     last_valid_node = temporary_path[j]
                     self.refined_path.append(last_valid_node)
-                    n = len(temporary_path) - (j - i)
+                    #n = len(temporary_path) - (j - i)
                     break
                 else:
                     j -= 1
