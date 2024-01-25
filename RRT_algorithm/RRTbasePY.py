@@ -159,7 +159,7 @@ class RRTGraph:
     - expand: Method to expand the RRT graph by adding a new node.
     - optimize_path: Method to smooth the path by removing unnecessary waypoints.
     """
-    SAFETY_DISTANCE: int = 10
+    SAFETY_DISTANCE: int = 5
     RADIUS = 38
 
     def __init__(self, start, goal, mapDimensions, obsdim, obstacles, prohibited_zone):
