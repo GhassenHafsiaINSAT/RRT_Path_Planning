@@ -63,11 +63,11 @@ def run(map: RRTMap,
 
 def main(args):
     dimensions = (750, 500)
-    start = (100, 250)
-    goal = (600, 250)
+    start = (350, 245)
+    goal = (675, 250)
     obsdim = 31
-    obstacles = [[275, 300], [275, 200], [375, 150], [375, 350], [475, 300], [475, 200]]
-    prohibited_zone = [275, 200, 475, 300]
+    obstacles = [[250, 175], [250, 325], [375, 125], [375, 375], [500, 175], [500, 325]]
+    prohibited_zone = [0, 0, 10, 10]
     pygame.init()
 
     map = RRTMap(start, goal, dimensions, obsdim, obstacles, prohibited_zone)

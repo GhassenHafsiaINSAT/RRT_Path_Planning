@@ -104,7 +104,7 @@ class RRTMap:
         for node in path:
             pygame.draw.circle(self.map, self.BLUE, node, self.NODE_RAD + 5, 0)
         for node in path_smoothed:
-            pygame.draw.circle(self.map, self.RED, node, self.NODE_RAD + 38, 0)
+            pygame.draw.circle(self.map, self.RED, node, self.NODE_RAD , 0)
 
     def drawobs(self): 
         """
@@ -159,7 +159,7 @@ class RRTGraph:
     - expand: Method to expand the RRT graph by adding a new node.
     - optimize_path: Method to smooth the path by removing unnecessary waypoints.
     """
-    SAFETY_DISTANCE: int = 5
+    SAFETY_DISTANCE: int = 0
     RADIUS = 38
 
     def __init__(self, start, goal, mapDimensions, obsdim, obstacles, prohibited_zone):
