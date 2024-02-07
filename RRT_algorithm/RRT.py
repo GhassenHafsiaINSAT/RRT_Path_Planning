@@ -63,7 +63,7 @@ def run(map: RRTMap,
 
 def main(args):
     dimensions = (750, 500)
-    start = (350, 245)
+    start = (100, 100)
     goal = (675, 250)
     obsdim = 31
     obstacles = [[250, 175], [250, 325], [375, 125], [375, 375], [500, 175], [500, 325]]
