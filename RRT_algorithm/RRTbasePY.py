@@ -83,8 +83,8 @@ class RRTMap:
         - obstacles (list): List of obstacle positions.
         """
 
-        pygame.draw.circle(self.map, self.GREEN, self.start, self.NODE_RAD + 10, 1)
-        pygame.draw.circle(self.map, self.GRAY, self.goal, self.NODE_RAD + 10, 1)
+        pygame.draw.circle(self.map, self.GREEN, self.start, self.NODE_RAD + 10, 0)
+        pygame.draw.circle(self.map, self.GRAY, self.goal, self.NODE_RAD + 10, 0)
         rect_width = abs(self.prohibited_zone[2] - self.prohibited_zone[0])
         rect_height = abs(self.prohibited_zone[3] - self.prohibited_zone[1])        
         rectangle = pygame.Rect(self.prohibited_zone[0], self.prohibited_zone[1], rect_width, rect_height)
@@ -102,9 +102,9 @@ class RRTMap:
         """    
 
         for node in path:
-            pygame.draw.circle(self.map, self.BLUE, node, self.NODE_RAD + 5, 0)
+            pygame.draw.circle(self.map, self.BLUE, node, self.NODE_RAD + 38, 0)
         for node in path_smoothed:
-            pygame.draw.circle(self.map, self.RED, node, self.NODE_RAD , 0)
+            pygame.draw.circle(self.map, self.RED, node, self.NODE_RAD +38 , 0)
 
     def drawobs(self): 
         """
@@ -274,8 +274,8 @@ class RRTGraph:
             # TODO[RS]: check here if the point is in the obstacles/prohibited area(s)
             # Basically run the sampled point through a list of "filters" that would tell you whether
             # it's a good candidate or not
-            #print('sampling envir', x, y)
-            if not (self.prohibited_zone[0] <= x <= self.prohibited_zone[2] and self.prohibited_zone[1] <= y <= self.prohibited_zone[3]):
+            print('sampling envir', x, y)
+            if not ((275 <= x + self.RADIUS <= 500 and 0 <= y + self.RADIUS <= 28) and (self.prohibited_zone[0] <= x <= self.prohibited_zone[2] and self.prohibited_zone[1] <= y <= self.prohibited_zone[3])):
                 return (x, y)
 
     def nearest(self, n: int) -> int:
