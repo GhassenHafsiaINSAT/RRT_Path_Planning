@@ -94,4 +94,3 @@ def optimizer(current_x_robot,
             return True
         else:
             return False
-        # tej ya 3oss
