@@ -11,7 +11,7 @@ Date: 12/27/2023
 
 import random
 import math
-import pygame
+import pygame 
 
 from typing import List, Tuple
 Color = Tuple[int, int, int]

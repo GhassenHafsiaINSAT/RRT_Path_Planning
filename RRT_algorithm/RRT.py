@@ -1,5 +1,5 @@
 import argparse
-import pygame
+import pygame 
 import time
 
 from RRTbasePY import RRTGraph 
@@ -69,7 +69,7 @@ def main(args):
     obsdim = 38
     obstacles = [[250, 175], [250, 325], [375, 125], [375, 375], [500, 175], [500, 325]]
     prohibited_zone = [0, 0, 10, 10]
-    adv_obs = (500,450)
+    adv_obs = [250, 325]
     pygame.init()
 
     map = RRTMap(start, goal, dimensions, my_dim, obsdim, obstacles, adv_obs, prohibited_zone)
