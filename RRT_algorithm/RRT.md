@@ -24,16 +24,27 @@
 def rrt(start, goal, max_iters, space):
     tree = [start]
     for _ in range(max_iters):
-        x_rand = sample_free_space(space)
-        x_near = nearest_neighbor(tree, x_rand)
-        x_new = steer(x_near, x_rand)
-        if obstacle_free(x_near, x_new, space):
+        x_rand = sample_envir(space)
+        x_near = nearest(tree, x_rand)
+        x_new = expand(x_near, x_rand)
+        if is_free(x_near, x_new, space):
             tree.append(x_new)
             if reached_goal(x_new, goal):
-                return reconstruct_path(tree, start, goal)
+                return path_to_goal(tree, start, goal)
     return None
 ```
 
 ## Implementation in Python 
-- **Key Functions:**  
+- **Key Functions:**
+  
+     - **sample_envir:** Method to randomly sample a point within the map dimensions.
+       
+     - **nearest:** Method to find the nearest node to a given node in the graph.
+       
+     - **isFree:** Method to check if the last added node is in collision with any obstacles.
+       
+     - **expand:** Method to expand the RRT graph by adding a new node.
+       
+     - **path_to_goal:** Method to generate a path from the start to the goal using the parent relationships.
+       
        
