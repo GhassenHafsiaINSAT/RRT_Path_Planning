@@ -3,9 +3,9 @@
 ## Table of Contents
 - [Introduction](#introduction)
   - [Mathematical Formulation](#Mathematical-Formulation)
-  - [Pseudo-code for RRT](#Pseudo-codeforRRT)
-  - [Implementation in Python](#ImplementationinPython)
-  - [Figures and Visualizations](#FiguresandVisualizations)
+  - [Pseudo-code for RRT](#Pseudo-code-for-RRT)
+  - [Implementation in Python](#Implementation-in-Python)
+  - [Figures and Visualizations](#Figures-and-Visualizations)
 - [Usage](#usage)
   - [Code Explanation](#Code-Explanation)
   - [Running Locally](#running-locally)
