@@ -46,5 +46,11 @@ def rrt(start, goal, max_iters, space):
      - **expand:** Method to expand the RRT graph by adding a new node.
        
      - **path_to_goal:** Method to generate a path from the start to the goal using the parent relationships.
+ 
+| ![image](https://github.com/GhassenHafsiaINSAT/Path_Planning/assets/110825502/72078da2-c1f9-4e87-b79d-9c6cf8e18dcc)| ![image](https://github.com/GhassenHafsiaINSAT/Path_Planning/assets/110825502/a1f0b83d-d8aa-466e-a91a-36a0f2ce3d3a) | ![image](https://github.com/GhassenHafsiaINSAT/Path_Planning/assets/110825502/a0595ba6-e680-4110-8258-73daa7b3938f) |
+|---------------------------------------|---------------------------------------|---------------------------------------|
+
+
+
        
        
