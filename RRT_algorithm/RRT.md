@@ -7,7 +7,7 @@
   - [Implementation in Python](#ImplementationinPython)
   - [Figures and Visualizations](#FiguresandVisualizations)
 - [Usage](#usage)
-  - [Code Explanation](#CodeExplanation)
+  - [Code Explanation](#Code-Explanation)
   - [Running Locally](#running-locally)
 
 
